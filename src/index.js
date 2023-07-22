@@ -29,6 +29,25 @@ function file(faas) {
   return path.resolve('.', process.env.AC_FAAS_ROOT, faas);
 }
 
+function requireModule(faasname) {
+  let module = faasname;
+  if(!require.cache[module]) {
+    module = `${faasname}.js`;
+  }
+  if(!require.cache[module]) {
+    module = `${faasname}.cjs`;
+  }
+  try {
+    module = require(module);
+    if(typeof module !== 'function' && typeof module.default === 'function') {
+      module = module.default;
+    }
+    return module;
+  } catch (ex) {
+    return null;
+  }
+}
+
 // response
 app.use(async (ctx) => {
   const {method} = ctx.request;
@@ -41,13 +60,15 @@ app.use(async (ctx) => {
     set: (field, value) => ctx.set(field, value),
     remove: (field) => ctx.remove(field),
     status: (code) => ctx.response.status = code,
+    url: ctx.request.url,
+    path: ctx.request.path,
   };
   const faas = ctx.request.path.slice(1);
   // console.log(faas);
   if(faas && !faas.startsWith('.')) {
-    const fassname = file(faas);
+    const faasname = file(faas);
     try {
-      let module = require(fassname);
+      let module = requireModule(faasname);
       if(typeof module !== 'function' && typeof module.default === 'function') {
         module = module.default;
       }
