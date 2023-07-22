@@ -25,7 +25,7 @@ npm install aircode-mock-runtime
 
 `--init` 参数在项目下如果没有src目录，会自动创建src/hello.js云函数。
 
-如果`hello.js`存在，运行的时候，浏览器自动访问hello云函数。
+如果`hello.js`存在，运行命令的时候，浏览器自动启动并访问hello云函数。
 
 ## 高级用法
 
