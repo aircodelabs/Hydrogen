@@ -9,8 +9,8 @@ dependencies:
     specifier: ^5.0.0
     version: 5.0.0
   airdb-lite:
-    specifier: ^0.2.2
-    version: 0.2.2
+    specifier: ^0.2.3
+    version: 0.2.3
   chokidar:
     specifier: ^3.5.3
     version: 3.5.3
@@ -342,8 +342,8 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  /airdb-lite@0.2.2:
-    resolution: {integrity: sha512-KfPzHYJn566tUvoM5qLGK7v4xeHj9d0XrnRCa75VXY4NvOTYNFhsfsa9sjrox2bxmACvu+Js+NrprgKrkyfluQ==}
+  /airdb-lite@0.2.3:
+    resolution: {integrity: sha512-q4JW58x5YTlvLCWPjrLudYt7sJZWUtqd8wjnZxhdApt4VTjDrVrKAZoEJPXXbIt8fCr4OK1eI4ashMlgi1Y0Mg==}
     dependencies:
       eslint: 8.45.0
     transitivePeerDependencies:
