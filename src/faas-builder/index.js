@@ -27,7 +27,9 @@ function moduleRequire(filepath) {
 module.exports = function(root = 'src') {
   const dir = path.resolve('.', root);
   const chokidar = require('chokidar');
-  chokidar.watch(dir).on('all', (event, filepath) => {
+  chokidar.watch(dir, {
+    ignored: [/node_modules\//, /\.client\.(mjs|cjs|js|ts)$/],
+  }).on('all', (event, filepath) => {
     if(filepath.endsWith('.js') || filepath.endsWith('.cjs') || filepath.endsWith('.mjs')) {
       let modulePath = filepath;
       if(filepath.endsWith('.mjs')) {
