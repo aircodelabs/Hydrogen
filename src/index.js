@@ -71,8 +71,7 @@ app.use(async (ctx) => {
       }
       if(typeof module === 'function') {
         try {
-          const res = await module(params, context);
-          ctx.body = JSON.stringify(res);
+          ctx.body = await module(params, context);
         } catch(ex) {
           console.error(ex);
         }
