@@ -4,6 +4,7 @@ const { pathToFileURL, fileURLToPath } = require('node:url');
 const fetch = require('node-fetch');
 const {generateID} = require('../utils');
 const mime = require('mime');
+const { file } = require('../utils');
 
 function randomString(length = 8) {
   return Math.random().toString(36).substring(2, length + 2);
@@ -60,8 +61,39 @@ module.exports = class {
     return await this.table.save(data);
   }
 
-  async download(file, options = {}) {
-    console.error('Not implemented yet.');
+  async download(condition, options = {}) {
+    const type = options.dateType || 'string';
+    const onProgress = options.onProgress;
+    const fileRecord = await this.table.where(condition).findOne();
+
+    if(fileRecord) {
+      const filepath = file(fileRecord.url.slice(1));
+      // console.log('filepath', filepath);
+      
+      const filestream = fs.createReadStream(filepath);
+      const totalSize = fileRecord.size;
+      let currentSize = 0;
+
+      if(onProgress)  {
+        filestream.on('data', (chunk) => {
+          currentSize += chunk.length;
+          const percentage = Math.round(currentSize / totalSize * 100);
+          const remainSize = totalSize - currentSize;
+          onProgress(percentage, remainSize);
+        });
+      }
+
+      if(type === 'stream') {
+        return filestream;
+      } else if(type === 'string' || type === 'buffer') {
+        return new Promise((resolve, reject) => {
+          const chunks = [];
+          filestream.on('data', (chunk) => chunks.push(chunk));
+          filestream.on('end', () => resolve(type === 'string' ? Buffer.concat(chunks).toString('utf-8') : Buffer.concat(chunks)));
+          filestream.on('error', (err) => reject(err));
+        });
+      }
+    }
   }
 
   async delete(condition = {}) {

@@ -4,6 +4,7 @@ const Koa = require('koa');
 const mime = require('mime');
 const build = require('./faas-builder');
 const { bodyParser } = require("@koa/bodyparser");
+const { file } = require('./utils');
 
 const app = new Koa();
 app.use(bodyParser());
@@ -24,10 +25,6 @@ moduleAlias.addAliases({
 });
 
 require('aircode'); // for cache
-
-function file(faas) {
-  return path.resolve('.', process.env.AC_FAAS_ROOT, faas);
-}
 
 function requireModule(faasname) {
   let module = faasname;
