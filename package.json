@@ -1,6 +1,6 @@
 {
   "name": "aircode-mock-runtime",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "",
   "main": "src/index.js",
   "bin": {
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@koa/bodyparser": "^5.0.0",
-    "airdb-lite": "^0.3.0",
+    "airdb-lite": "^0.4.0",
     "chokidar": "^3.5.3",
     "cross-env": "^7.0.3",
     "esbuild": "^0.18.15",
