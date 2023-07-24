@@ -59,6 +59,7 @@ app.use(async (ctx) => {
     status: (code) => ctx.response.status = code,
     url: ctx.request.url,
     path: ctx.request.path,
+    host: ctx.request.host,
   };
   const faas = ctx.request.path.slice(1);
   // console.log(faas);
