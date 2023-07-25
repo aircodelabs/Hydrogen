@@ -61,7 +61,7 @@ app.use(async (ctx) => {
     path: ctx.request.path,
     host: ctx.request.host,
   };
-  const faas = ctx.request.path.slice(1);
+  const faas = ctx.request.path.slice(1) || 'index';
   // console.log(faas);
   if(faas && !faas.startsWith('.')) {
     const faasname = file(faas);
