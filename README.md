@@ -30,6 +30,14 @@ npm i && npm start
 
 See [AirCode Docs](https://docs-cn.aircode.io/).
 
+## Configurations
+
+```js
+process.env.AC_FAAS_ROOT = process.env.AC_FAAS_ROOT || 'functions';
+process.env.AC_PUBLIC_DIR = process.env.AC_PUBLIC_DIR || 'public';
+process.env.AC_PORT = process.env.AC_PORT || 3000;
+```
+
 ## Integration
 
 TBD...
