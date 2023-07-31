@@ -11,7 +11,7 @@ A serverless framework create web servers that run anywhere.
 - 📁 Directory structure conventions.
 - 🤏 Minimal design.
 - ⚡️ Runtime optimization without distinguishing between development and production environments.
-- 🧊 Compatible and capable of running swiftly on the [AirCode](https://aircode.io) platform.
+- 🧊 Compatible and capable of running your app swiftly on the [AirCode](https://aircode.io) platform.
 
 ## Setup
 
