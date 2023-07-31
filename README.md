@@ -17,7 +17,7 @@ A serverless framework create web servers that run anywhere.
 1. Create an aircode app
 
 ```bash
-npx create-aircode-app my-aircode-app
+npx create-aircode-app@latest my-aircode-app
 ```
 
 2. Install dependencies and run
