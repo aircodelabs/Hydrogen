@@ -10,7 +10,8 @@ A serverless framework create web servers that run anywhere.
 - 🗄️ Built-in out-of-the-box text database and file API.
 - 📁 Directory structure conventions.
 - 🤏 Minimal design.
-- 🧊 Compatible and capable of running swiftly on the AirCode platform.
+- ⚡️ Runtime optimization without distinguishing between development and production environments.
+- 🧊 Compatible and capable of running swiftly on the [AirCode](https://aircode.io) platform.
 
 ## Setup
 
@@ -31,6 +32,8 @@ npm i && npm start
 See [AirCode Docs](https://docs-cn.aircode.io/).
 
 ## Configurations
+
+There are servial options that you can pass through process.env.
 
 ```js
 process.env.AC_FAAS_ROOT = process.env.AC_FAAS_ROOT || 'functions';
