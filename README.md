@@ -77,7 +77,9 @@ Simply visit your built functions with `http://localhost:3000/<your_func_name>`.
 
 ## Documentation
 
-See [AirCode Docs](https://docs-cn.aircode.io/).
+- [AirCode Docs Functions](https://docs-cn.aircode.io/guide/functions/).
+- [The Database](https://docs-cn.aircode.io/guide/database/)
+- [The File API](https://docs-cn.aircode.io/guide/files/)
 
 ## Configurations
 
