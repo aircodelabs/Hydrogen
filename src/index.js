@@ -2,13 +2,25 @@ const path = require('node:path');
 const fs = require('node:fs');
 const Koa = require('koa');
 const mime = require('mime');
-const build = require('./faas-builder');
+
 const { bodyParser } = require("@koa/bodyparser");
-const logger = require('koa-logger');
+const Logger = require('think-logger3');
+
+const cookie = require('cookie');
+
+const build = require('./faas-builder');
 const { file } = require('./utils');
 
+const logger = new Logger();
+
+const _symbolReceviedTime = Symbol('request-received.startTime');
+
 const app = new Koa();
-app.use(logger());
+app.use(async (ctx, next) => {
+  logger.info(`<<< ${ctx.method} ${ctx.url}`);
+  ctx[_symbolReceviedTime] = Date.now();
+  await next();
+});
 app.use(bodyParser());
 
 process.env.AC_APP_ID = process.env.AC_APP_ID || 'aircode-mock';
@@ -48,7 +60,7 @@ function requireModule(faasname) {
 }
 
 // response
-app.use(async (ctx) => {
+app.use(async (ctx, next) => {
   const {method} = ctx.request;
   const params = method === 'GET' ? ctx.request.query : ctx.request.body;
   const context = {
@@ -58,10 +70,23 @@ app.use(async (ctx) => {
     tirgger: 'HTTP',
     set: (field, value) => ctx.set(field, value),
     remove: (field) => ctx.remove(field),
-    status: (code) => ctx.response.status = code,
+    status: (code) => {
+      if(code) ctx.response.status = code;
+      return ctx.response.status;
+    },
+    cookie: (name, value, options) => {
+      ctx.cookies.set(name, value, options);
+    },
+    clearCookie: (name) => {
+      ctx.cookies.set(name, '', { expires: new Date(1) });
+    },
     url: ctx.request.url,
     path: ctx.request.path,
     host: ctx.request.host,
+    protocal: ctx.protocol,
+    req: ctx.request,
+    res: ctx.response,
+    cookies: cookie.parse(ctx.request.headers.cookie || ''),
   };
   const faas = ctx.request.path.slice(1) || 'index';
   // console.log(faas);
@@ -76,9 +101,8 @@ app.use(async (ctx) => {
         try {
           ctx.body = await module(params, context);
         } catch(ex) {
-          console.error(ex);
+          logger.error(ex);
         }
-        return;
       }
     } catch (ex) {
       // do nothing
@@ -96,14 +120,22 @@ app.use(async (ctx) => {
     } else {
       ctx.body = '404 Not Found File.';
     }
-    return;
+  } else {
+    ctx.body = '404 Not Found.';
   }
-  ctx.body = '404 Not Found.';
+  await next();
+});
+
+app.use(async (ctx) => {
+  logger.info(`>>> ${ctx.method} ${ctx.url} ${ctx.response.status} ${Date.now() - ctx[_symbolReceviedTime]}ms`);
 });
 
 function start(port = process.env.AC_PORT || 3000) {
   app.listen(port);
   app.PORT = port;
+  logger.info(`Server running at http://127.0.0.1:${port}`);
+  logger.info(`Public root: `);
+  logger.info(`FaaS root: ${process.env.AC_FAAS_ROOT}`);
   return app;
 }
 
