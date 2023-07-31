@@ -14,19 +14,13 @@ A serverless framework creates web servers that run anywhere.
 
 ## Setup
 
-1. Install hygrogen
-
-```
-npm install -g hydrogen
-```
-
-2. Create an aircode app
+1. Create an aircode app
 
 ```bash
-aircode-create my-aircode-app
+npx create-aircode-app my-aircode-app
 ```
 
-3. Install dependencies and run
+2. Install dependencies and run
 
 ```bash
 npm i && npm start

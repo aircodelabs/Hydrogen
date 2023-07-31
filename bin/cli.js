@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const fs = require('node:fs');
 const path = require('node:path');
 const command = process.argv[2];
