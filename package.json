@@ -1,10 +1,11 @@
 {
   "name": "hydrogen",
-  "version": "0.4.3",
+  "version": "0.1.0",
   "description": "",
   "main": "src/index.js",
   "bin": {
-    "run-aircode": "./bin/cli.js"
+    "aircode-run": "./bin/cli.js",
+    "aircode-create": "./bin/create.js"
   },
   "scripts": {
     "dev": "cross-env AC_FAAS_ROOT=test AC_PORT=3000 node bin/cli.js",

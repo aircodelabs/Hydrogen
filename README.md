@@ -1,38 +1,41 @@
-# AirCode Mock Runtime
+# Hydrogen
 
-实验：在本地模拟 AirCode 的 User Runtime。
+A serverless framework creates web servers that run anywhere. 
 
-## Usage
+## Features
 
-1. Install
+- 🐇 Rapid development with HMR 🔥
+- 📦 Built-in support for CommonJS (.js .cjs), ES module (.mjs), and TypeScript (.ts) cloud functions.
+- 🧸 Almost zero configurations.
+- 🗄️ Built-in out-of-the-box text database and file API.
+- 📁 Directory structure conventions.
+- 🤏 Minimal design.
+- 🧊 Compatible and capable of running swiftly on the AirCode platform.
 
-```
-npm install aircode-mock-runtime
-```
+## Setup
 
-2. Config package.json
-
-```json
-{
-  ...
-  "scripts": {
-    "dev": "run-aircode --init",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  ...
-}
-```
-
-`--init` 参数在项目下如果没有src目录，会自动创建src/hello.js云函数。
-
-如果`hello.js`存在，运行命令的时候，浏览器自动启动并访问hello云函数。
-
-## 高级用法
-
-修改云函数根目录和服务端口
-
-你可以通过`cross-env`配置`AC_FAAS_ROOT`和`AC_PORT`。
+1. Install hygrogen
 
 ```
-cross-env AC_FAAS_ROOT=test AC_PORT=3000 run-aircode --init
+npm install -g hydrogen
 ```
+
+2. Create an aircode app
+
+```bash
+aircode-create my-aircode-app
+```
+
+3. Install dependencies and run
+
+```bash
+npm i && npm start
+```
+
+## Documentation
+
+See [AirCode Docs](https://docs-cn.aircode.io/).
+
+## Integration
+
+TBD...

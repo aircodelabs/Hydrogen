@@ -2,7 +2,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const command = process.argv[2];
 
-process.env.AC_FAAS_ROOT = process.env.AC_FAAS_ROOT || 'src';
+process.env.AC_FAAS_ROOT = process.env.AC_FAAS_ROOT || 'functions';
+process.env.AC_PUBLIC_DIR = process.env.AC_PUBLIC_DIR || 'public';
 
 const template = `// @see https://docs.aircode.io/guide/functions/
 const aircode = require('aircode');
@@ -20,6 +21,9 @@ if(command === '--init') {
     fs.mkdirSync(process.env.AC_FAAS_ROOT);
     const helloFile = path.join(process.env.AC_FAAS_ROOT, 'hello.js');
     fs.writeFileSync(helloFile, template);
+  }
+  if(!fs.existsSync(process.env.AC_PUBLIC_DIR)) {
+    fs.mkdirSync(process.env.AC_PUBLIC_DIR);
   }
 }
 
