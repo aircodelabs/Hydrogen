@@ -4,14 +4,14 @@ A serverless framework create web servers that run anywhere.
 
 ## Features
 
-- 🐇 Rapid development with HMR 🔥
-- 📦 Built-in support for CommonJS (.js .cjs), ES module (.mjs), and TypeScript (.ts) functions.
-- 🧸 Almost zero configurations.
-- 🗄️ Built-in out-of-the-box text database and file API.
-- 📁 Directory structure conventions.
-- 🤏 Written in Pure JavaScript with minimal design.
-- ⚡️ Runtime optimization without distinguishing between development and production environments.
-- 🧊 Compatible and capable of running your app swiftly on the [AirCode](https://aircode.io) platform.
+- 🐇 Swift development with Hot Module Replacement (HMR) 🔥
+- 📦 Supports CommonJS (.js .cjs), ES modules (.mjs), and TypeScript (.ts) functions out of the box.
+- 🧸 Requires almost zero configurations.
+- 🗄️ Comes with a built-in, ready-to-use text database and file API.
+- 📁 Follows intuitive directory structure conventions.
+- 🤏 Written in Pure JavaScript with a sleek and minimalist design.
+- ⚡️ Optimized for runtime performance, regardless of development or production environments.
+- 🧊 Compatible and capable of running your app seamlessly on the AirCode platform.
 
 ## Setup
 
