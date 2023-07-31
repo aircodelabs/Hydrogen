@@ -23,9 +23,11 @@
     "cross-env": "^7.0.3",
     "esbuild": "^0.18.15",
     "koa": "^2.14.2",
+    "koa-logger": "^3.2.1",
     "mime": "^3.0.0",
     "module-alias": "^2.2.3",
     "node-fetch": "^2.6.12",
-    "open": "^8.4.2"
+    "open": "^8.4.2",
+    "think-logger3": "^1.4.0"
   }
 }

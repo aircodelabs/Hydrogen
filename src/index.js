@@ -4,9 +4,11 @@ const Koa = require('koa');
 const mime = require('mime');
 const build = require('./faas-builder');
 const { bodyParser } = require("@koa/bodyparser");
+const logger = require('koa-logger');
 const { file } = require('./utils');
 
 const app = new Koa();
+app.use(logger());
 app.use(bodyParser());
 
 process.env.AC_APP_ID = process.env.AC_APP_ID || 'aircode-mock';

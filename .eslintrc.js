@@ -20,7 +20,8 @@ module.exports = {
         }
     ],
     "parserOptions": {
-        "ecmaVersion": "latest"
+        "ecmaVersion": "latest",
+        "sourceType": "module",
     },
     "rules": {
         semi: 'error',

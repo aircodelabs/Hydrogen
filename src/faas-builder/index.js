@@ -3,7 +3,13 @@ const fs = require('node:fs');
 
 const esbuild = require('esbuild');
 
+const Logger = require('think-logger3');
+const logger = new Logger();
+
+const modules = new Set();
+
 function moduleRequire(filepath) {
+  modules.add(filepath);
   if(filepath.endsWith('.mjs')) {
     const outfile = filepath.replace(/\.mjs$/, '.cjs');
     if(fs.existsSync(outfile)) {
@@ -16,11 +22,32 @@ function moduleRequire(filepath) {
       outfile,
       external: ['aircode', 'node:*'],
     });
-    const ret = require(outfile);
-    fs.unlinkSync(outfile);
+    let ret = null;
+    try {
+      ret = require(outfile);
+    } catch(ex) {
+      logger.error(ex.message);
+    } finally {
+      fs.unlinkSync(outfile);
+    }
     return ret;
   } else {
     return require(filepath);
+  }
+}
+
+function clearRequireCache() {
+  for(let module of modules) {
+    if(module.endsWith('.mjs')) {
+      module = module.replace(/\.mjs$/, '.cjs');
+    }
+    delete require.cache[module];
+  }
+}
+
+function reloadAllModules() {
+  for(const module of modules) {
+    moduleRequire(module);
   }
 }
 
@@ -31,23 +58,23 @@ module.exports = function(root = 'src') {
     ignored: [/node_modules\//, /\.client\.(mjs|cjs|js|ts)$/],
   }).on('all', (event, filepath) => {
     if(filepath.endsWith('.js') || filepath.endsWith('.cjs') || filepath.endsWith('.mjs')) {
-      let modulePath = filepath;
-      if(filepath.endsWith('.mjs')) {
-        modulePath = filepath.replace(/\.mjs$/, '.cjs');
-      }
       if(event === 'add' || event === 'change') {
-        let tempModule;
         try {
-          tempModule = require.cache[modulePath];
-          delete require.cache[modulePath];
-          moduleRequire(filepath);
-        } catch (ex) {
-          if(tempModule) {
-            require.cache[modulePath] = tempModule;
+          if(modules.has(filepath)) {
+            // reload all modules 
+            clearRequireCache();
+            reloadAllModules();
+          } else {
+            moduleRequire(filepath);
           }
-          console.error(ex);
+        } catch (ex) {
+          // console.error(ex);
         }
       } else if(event === 'unlink') {
+        let modulePath = filepath;
+        if(filepath.endsWith('.mjs')) {
+          modulePath = filepath.replace(/\.mjs$/, '.cjs');
+        }
         delete require.cache[modulePath];
       }
     }
