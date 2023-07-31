@@ -1,6 +1,6 @@
 # Hydrogen
 
-A serverless framework creates web servers that run anywhere. 
+A serverless framework create web servers that run anywhere. 
 
 ## Features
 
