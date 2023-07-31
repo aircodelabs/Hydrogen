@@ -83,7 +83,7 @@ Simply visit your built functions with `http://localhost:3000/<your_func_name>`.
 
 ## Configurations
 
-There are servial options that you can pass through process.env.
+There are a few options that you can pass through process.env.
 
 ```js
 process.env.AC_FAAS_ROOT = process.env.AC_FAAS_ROOT || 'functions';
