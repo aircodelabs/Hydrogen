@@ -5,6 +5,7 @@ const mime = require('mime');
 
 const { bodyParser } = require("@koa/bodyparser");
 const Logger = require('think-logger3');
+const serve = require('koa-static');
 
 const cookie = require('cookie');
 
@@ -23,13 +24,18 @@ app.use(async (ctx, next) => {
 });
 app.use(bodyParser());
 
-process.env.AC_APP_ID = process.env.AC_APP_ID || 'aircode-mock';
+if(fs.existsSync('./.aircoderc.js')) {
+  require('./.aircoderc.js');
+}
+
+process.env.AC_APP_ID = process.env.AC_APP_ID || 'aircode-hydrogen';
 process.env.AC_MEMORY_SIZE = process.env.AC_MEMORY_SIZE || '1024';
 process.env.AC_EXECUTION_TIMEOUT =process.env.AC_EXECUTION_TIMEOUT || 60;
 process.env.AC_DEPLOYMENT_VERSION = -1;
 process.env.AC_REGION = process.env.AC_REGION || 'local';
 process.env.AC_NODE_JS_VERSION = process.version.match(/^v(\d+\.\d+)/)[1];
-process.env.AC_FAAS_ROOT = process.env.AC_FAAS_ROOT || 'src';
+process.env.AC_FAAS_ROOT = process.env.AC_FAAS_ROOT || 'functions';
+process.env.AC_PUBLIC_DIR = process.env.AC_PUBLIC_DIR || 'public';
 
 build(process.env.AC_FAAS_ROOT);
 
@@ -58,6 +64,30 @@ function requireModule(faasname) {
     return null;
   }
 }
+
+app.use(async (ctx, next) => {
+  if(ctx.url.slice(1).startsWith(`${process.env.AC_PUBLIC_DIR}/`))
+    await serve('.')(ctx, next);
+  else
+    await next();
+});
+
+app.use(async (ctx, next) => {
+  const ext = path.extname(ctx.url);
+
+  if (['.json', '.yaml', '.yml'].includes(ext)) {
+    logger.info(`response ${ext} file`);
+    const faas = ctx.request.path.slice(1) || 'index';
+    const filepath = file(faas);
+    logger.info(`sendFile filepath: ${filepath}`);
+    const mimetype = mime.getType(filepath);
+    ctx.set('Content-type', mimetype);
+    ctx.body = fs.readFileSync(filepath, 'utf-8');
+    return;
+  }
+
+  next();
+});
 
 // response
 app.use(async (ctx, next) => {
