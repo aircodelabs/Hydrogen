@@ -5,7 +5,7 @@ A serverless framework create web servers that run anywhere.
 ## Features
 
 - 🐇 Rapid development with HMR 🔥
-- 📦 Built-in support for CommonJS (.js .cjs), ES module (.mjs), and TypeScript (.ts) cloud functions.
+- 📦 Built-in support for CommonJS (.js .cjs), ES module (.mjs), and TypeScript (.ts) functions.
 - 🧸 Almost zero configurations.
 - 🗄️ Built-in out-of-the-box text database and file API.
 - 📁 Directory structure conventions.
