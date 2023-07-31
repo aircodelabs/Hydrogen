@@ -13,7 +13,7 @@ The serverless framework creates web servers that can run anywhere.
 - ⚡️ Optimized for runtime performance, regardless of development or production environments.
 - 🧊 Compatible and capable of running your app seamlessly on the AirCode platform.
 
-## Setup
+## Getting Started
 
 1. Create an aircode app
 
@@ -26,6 +26,52 @@ npx create-aircode-app@latest my-aircode-app
 ```bash
 npm i && npm start
 ```
+
+## Build Cloud Functions
+
+You can easily build functions in `./functions` directory.
+
+1. With `*.js` or `*.cjs`
+
+```js
+// myfun.js
+const aircode = require('aircode');
+
+module.exports = async function(params, context) {
+  console.log('Received params:', params);
+  return {
+    message: 'Hi, AirCode.'
+  };
+}
+```
+
+2. Or with `*.mjs`
+
+```js
+import aircode from 'aircode';
+
+export default async function (params, context) {
+  console.log('Received params:', params);
+  return {
+    message: 'Hi, AirCode.',
+  };
+};
+```
+
+3. Or with `*.ts`
+
+```js
+import aircode from 'aircode';
+
+export default async function (params: any, context: any) {
+  console.log('Received params:', params);
+  return {
+    message: 'Hi, AirCode.',
+  };
+};
+```
+
+Simply visit your built functions with `http://localhost:3000/<your_func_name>`.
 
 ## Documentation
 
