@@ -9,7 +9,7 @@ A serverless framework create web servers that run anywhere.
 - 🧸 Almost zero configurations.
 - 🗄️ Built-in out-of-the-box text database and file API.
 - 📁 Directory structure conventions.
-- 🤏 Minimal design.
+- 🤏 Writting in Pure JavaScript with minimal design.
 - ⚡️ Runtime optimization without distinguishing between development and production environments.
 - 🧊 Compatible and capable of running your app swiftly on the [AirCode](https://aircode.io) platform.
 
