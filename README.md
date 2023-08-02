@@ -29,6 +29,18 @@ npx create-aircode-app@latest my-aircode-app && cd my-aircode-app
 npm i && npm start
 ```
 
+## Directory Structure
+
+The default project directory structure is very simple.
+
+```bash
+├──functions # put your function api here.
+│  └── hello.js
+├──public # put your static resources here.
+│  └── favicon.ico
+└── package.json
+```
+
 ## Build Cloud Functions
 
 You can easily build functions in `./functions` directory.
@@ -74,6 +86,8 @@ export default async function (params: any, context: any) {
 ```
 
 Simply visit your built functions with `http://localhost:3000/<your_func_name>`.
+
+And visit your static resources with `http://localhost:3000/public/<your_static_file>`.
 
 ## Documentation
 
