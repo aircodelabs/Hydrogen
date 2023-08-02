@@ -91,7 +91,7 @@ And visit your static resources with `http://localhost:3000/public/<your_static_
 
 ## Documentation
 
-- [AirCode Docs Functions](https://docs-cn.aircode.io/guide/functions/).
+- [Cloud Function](https://docs-cn.aircode.io/guide/functions/).
 - [The Database](https://docs-cn.aircode.io/guide/database/)
 - [The File API](https://docs-cn.aircode.io/guide/files/)
 
