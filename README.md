@@ -43,7 +43,7 @@ The default project directory structure is very simple.
 
 ## Build Cloud Functions
 
-You can easily build functions in `./functions` directory.
+You can easily build your function api in `./functions` directory.
 
 1. With `*.js` or `*.cjs`
 
