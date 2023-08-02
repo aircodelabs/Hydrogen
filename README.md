@@ -35,9 +35,9 @@ The default project directory structure is very simple.
 
 ```bash
 ├──functions # put your function api here.
-│  └── hello.js
+│  └── hello.js # http://localhost:3000/hello
 ├──public # put your static resources here.
-│  └── favicon.ico
+│  └── favicon.ico # http://localhost:3000/public/favicon.ico
 └── package.json
 ```
 
