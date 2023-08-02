@@ -1,6 +1,6 @@
 # Hydrogen
 
-<img width="168" alt="未标题-3" src="https://github.com/AirCodeLabs/Hydrogen/assets/316498/202f3b93-fd85-4708-9e77-54ed52223389">
+<img width="168" alt="未标题-3" src="https://github.com/AirCodeLabs/Hydrogen/assets/316498/013996f1-69b9-4208-887f-2dab00b45cab">
 
 The serverless framework creates web servers that can run anywhere.
 
