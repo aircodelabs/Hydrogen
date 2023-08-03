@@ -1,0 +1,39 @@
+* {
+  font-size: 14px;
+}
+.drag-area {
+  width: 90vw;
+  border: dashed 1px gray;
+  color: #777;
+  margin: 20px auto;
+  height: 40vh;
+  max-height: 450px;
+}
+.drag-area.active {
+  color:red;
+  border-color:red;
+}
+.footer {
+  float: right;
+  margin-right: 5vw;
+}
+.uploader-tips {
+  text-align: center;
+  height: 200px;
+  line-height: 200px;
+}
+.file-name {
+  text-align: center;
+  height: 200px;
+  line-height: 200px;
+}
+.upload-result {
+  margin-top: 60px;
+  margin-left: 5vw;
+}
+.upload-result .error {
+  color: red;
+}
+.upload-result .copy {
+  margin-left: 10px;
+}

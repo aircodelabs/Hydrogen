@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const Koa = require('koa');
 const mime = require('mime');
 
-const { bodyParser } = require("@koa/bodyparser");
+const { koaBody } = require('koa-body');
 const Logger = require('think-logger3');
 const serve = require('koa-static');
 
@@ -22,7 +22,15 @@ app.use(async (ctx, next) => {
   ctx[_symbolReceviedTime] = Date.now();
   await next();
 });
-app.use(bodyParser());
+app.use(koaBody({
+  multipart: true,
+  jsonLimit: '4.5mb',
+  formLimit: '4.5mb',
+  textLimit: '4.5mb',
+  formidable: {
+    maxFileSize: 4.5 * 1024 * 1024, // 设置上传文件大小最大限制，默认2M
+  },
+}));
 
 if(fs.existsSync('./.aircoderc.js')) {
   require('./.aircoderc.js');
@@ -65,6 +73,7 @@ function requireModule(faasname) {
   }
 }
 
+// public dir
 app.use(async (ctx, next) => {
   if(ctx.url.slice(1).startsWith(`${process.env.AC_PUBLIC_DIR}/`))
     await serve('.')(ctx, next);
@@ -72,6 +81,7 @@ app.use(async (ctx, next) => {
     await next();
 });
 
+// json/yaml/yml
 app.use(async (ctx, next) => {
   const ext = path.extname(ctx.url);
 
@@ -87,6 +97,41 @@ app.use(async (ctx, next) => {
   }
 
   next();
+});
+
+// patch files to body
+app.use(async (ctx, next) => {
+  const files = ctx.request.files;
+  if(files) {
+    for(const [key, file] of Object.entries(files)) {
+      ctx.request.body[key] = file;
+      Object.defineProperties(file, {
+        buffer: {
+          get() {
+            if(!this._buffer) {
+              const filepath = this.filepath;
+              this._buffer = fs.readFileSync(filepath);
+            }
+            return this._buffer;
+          },
+          enumerable: true,
+        },
+        name: {
+          get() {
+            return this.originalFilename;
+          },
+          enumerable: true,
+        },
+        type: {
+          get() {
+            return this.mimetype;
+          },
+          enumerable: true,
+        },
+      });
+    }
+  }
+  await next();
 });
 
 // response
