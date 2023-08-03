@@ -82,22 +82,24 @@ app.use(async (ctx, next) => {
 });
 
 // json/yaml/yml
-app.use(async (ctx, next) => {
-  const ext = path.extname(ctx.url);
+if(process.env.AC_EXPOSE_CONFIG) {
+  app.use(async (ctx, next) => {
+    const ext = path.extname(ctx.url);
 
-  if (['.json', '.yaml', '.yml'].includes(ext)) {
-    logger.info(`response ${ext} file`);
-    const faas = ctx.request.path.slice(1) || 'index';
-    const filepath = file(faas);
-    logger.info(`sendFile filepath: ${filepath}`);
-    const mimetype = mime.getType(filepath);
-    ctx.set('Content-type', mimetype);
-    ctx.body = fs.readFileSync(filepath, 'utf-8');
-    return;
-  }
+    if (['.json', '.yaml', '.yml'].includes(ext)) {
+      logger.info(`response ${ext} file`);
+      const faas = ctx.request.path.slice(1) || 'index';
+      const filepath = file(faas);
+      logger.info(`sendFile filepath: ${filepath}`);
+      const mimetype = mime.getType(filepath);
+      ctx.set('Content-type', mimetype);
+      ctx.body = fs.readFileSync(filepath, 'utf-8');
+      return;
+    }
 
-  next();
-});
+    next();
+  });
+}
 
 // patch files to body
 app.use(async (ctx, next) => {
