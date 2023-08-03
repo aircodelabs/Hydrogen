@@ -8,10 +8,20 @@ const logger = new Logger();
 
 const modules = new Set();
 
+let isESMProject = false;
+if(fs.existsSync('./package.json')) {
+  const pkg = require(path.resolve('.', 'package.json'));
+  isESMProject = pkg.type === 'module';
+}
+
+function isModule(filepath) {
+  return filepath.endsWith('.mjs') || filepath.endsWith('.ts') || isESMProject && filepath.endsWith('.js');
+}
+
 function moduleRequire(filepath) {
   modules.add(filepath);
-  if(filepath.endsWith('.mjs') || filepath.endsWith('.ts')) {
-    const outfile = filepath.replace(/\.(mjs|ts)$/, '.cjs');
+  if(isModule(filepath)) {
+    const outfile = filepath.replace(/\.(mjs|ts|js)$/, '.cjs');
     if(fs.existsSync(outfile)) {
       throw new Error(`File ${outfile} already exists.`);
     }
@@ -48,8 +58,8 @@ function moduleRequire(filepath) {
 
 function clearRequireCache() {
   for(let module of modules) {
-    if(module.endsWith('.mjs') || module.endsWith('.ts')) {
-      module = module.replace(/\.(mjs|ts)$/, '.cjs');
+    if(isModule(module)) {
+      module = module.replace(/\.(mjs|ts|js)$/, '.cjs');
     }
     delete require.cache[module];
   }
@@ -84,7 +94,7 @@ module.exports = function(root = 'src') {
         }
       } else if(event === 'unlink') {
         let modulePath = filepath;
-        if(filepath.endsWith('.mjs') || filepath.endsWith('.ts')) {
+        if(isModule(filepath)) {
           modulePath = filepath.replace(/\.(mjs|ts)$/, '.cjs');
         }
         delete require.cache[modulePath];

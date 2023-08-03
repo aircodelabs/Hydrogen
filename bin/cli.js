@@ -33,6 +33,6 @@ const {start, file} = require('../src/index.js');
 
 const app = start();
 
-if(fs.existsSync(file('hello.js'))) {
+if(fs.existsSync(file('hello.js')) || fs.existsSync(file('hello.cjs')) || fs.existsSync(file('hello.mjs'))) {
   require('open')(`http://localhost:${app.PORT}/hello`);
 }
