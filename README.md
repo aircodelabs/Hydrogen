@@ -6,7 +6,7 @@ The serverless framework creates web servers that can run anywhere.
 
 ## Features
 
-- 🐇 Swift development with Hot Module Replacement (HMR) 🔥
+- 🐇 Rapid development with Hot Module Replacement (HMR) 🔥
 - 📦 Supports CommonJS (.js .cjs), ES modules (.mjs), and TypeScript (.ts) functions out of the box.
 - 🧸 Requires almost zero configurations.
 - 🗄️ Comes with a built-in, ready-to-use text database and file API.
