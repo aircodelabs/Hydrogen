@@ -50,3 +50,24 @@ npm install
 ```bash
 npm start
 ```
+
+## Deploy Hydrogen Project to AirCode
+
+If your project is created by `npx create-aircode-app@latest`, you can easily deploy your project to AirCode by the following steps:
+
+1. Create a github repo, and set it into your `package.json` file, for example:
+
+```json
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akira-cn/aircode-app-example.git"
+  },
+```
+
+2. Run `npm run deploy` to prepare the deploy info for AirCode.
+
+3. Push your code to Github.
+
+4. Visit your `functions/README.md`, Click the `Deploy` button to deploy your project to AirCode.
+
+<img src="https://aircode-yvo.b-cdn.net/resource/1691151473285-7u45bcpu3qe.jpg" width="350">
