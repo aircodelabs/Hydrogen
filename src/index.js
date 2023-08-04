@@ -33,7 +33,7 @@ app.use(koaBody({
 }));
 
 if(fs.existsSync('./.aircoderc.js')) {
-  require('./.aircoderc.js');
+  require(path.resolve('.', '.aircoderc.js'));
 }
 
 process.env.AC_APP_ID = process.env.AC_APP_ID || 'aircode-hydrogen';
