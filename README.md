@@ -6,7 +6,7 @@ The serverless framework creates web servers that can run anywhere.
 
 ## Features
 
-- 🐇 Swift development with Hot Module Replacement (HMR) 🔥
+- 🐇 Rapid development with Hot Module Replacement (HMR) 🔥
 - 📦 Supports CommonJS (.js .cjs), ES modules (.mjs), and TypeScript (.ts) functions out of the box.
 - 🧸 Requires almost zero configurations.
 - 🗄️ Comes with a built-in, ready-to-use text database and file API.
@@ -91,9 +91,9 @@ And visit your static resources with `http://localhost:3000/public/<your_static_
 
 ## Documentation
 
-- [Cloud Function](https://docs-cn.aircode.io/guide/functions/)
-- [The Database](https://docs-cn.aircode.io/guide/database/)
-- [The File API](https://docs-cn.aircode.io/guide/files/)
+- [Cloud Function](https://docs.aircode.io/guide/functions/)
+- [The Database](https://docs.aircode.io/guide/database/)
+- [The File API](https://docs.aircode.io/guide/files/)
 
 ## Configurations
 
