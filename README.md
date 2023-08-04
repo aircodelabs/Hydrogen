@@ -107,4 +107,5 @@ process.env.AC_PORT = process.env.AC_PORT || 3000;
 
 ## Integration
 
-TBD...
+[Integration Hydrogen with AirCode online](docs/integration-with-aircode.md)
+
