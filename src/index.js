@@ -63,13 +63,13 @@ function requireModule(faasname) {
     module = `${faasname}.cjs`;
   }
   try {
-    module = require(module);
-    if(typeof module !== 'function' && typeof module.default === 'function') {
-      module = module.default;
+    let _module = require(module);
+    if(typeof _module !== 'function' && typeof _module.default === 'function') {
+      _module = _module.default;
     }
-    return module;
+    return _module;
   } catch (ex) {
-    return null;
+    return require.cache[module];
   }
 }
 

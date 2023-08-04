@@ -90,7 +90,12 @@ module.exports = function(root = 'src') {
             moduleRequire(filepath);
           }
         } catch (ex) {
-          // console.error(ex);
+          // logger.error(ex.message);
+          let modulePath = filepath;
+          if(isModule(filepath)) {
+            modulePath = filepath.replace(/\.(mjs|ts)$/, '.cjs');
+          }
+          require.cache[modulePath] = async () => {return {error: ex.message};};
         }
       } else if(event === 'unlink') {
         let modulePath = filepath;
