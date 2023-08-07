@@ -1,4 +1,4 @@
-# Integration Hydrogen with AirCode online
+# Integrate Hydrogen with AirCode online
 
 Hydrogen and AirCode are highly compatible, making it easy to run the AirCode project locally using Hydrogen, and vice versa.
 
