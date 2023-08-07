@@ -46,7 +46,7 @@ ${packageJSON.name} github repo deploy to [AirCode](https://aircode.io).
 
 ## One-Click Deployment
 
-[![Deploy with AirCode](https://aircode.io/dashboard-public/shiki/aircode.svg)](${deployUrl})
+[![Deploy with AirCode](https://aircode.io/aircode-deploy-button.svg)](${deployUrl})
 `;
 
   const readmePath = path.resolve(root, 'README.md');
