@@ -63,11 +63,7 @@ function requireModule(faasname) {
     module = `${faasname}.cjs`;
   }
   try {
-    let _module = require(module);
-    if(typeof _module !== 'function' && typeof _module.default === 'function') {
-      _module = _module.default;
-    }
-    return _module;
+    return require(module);
   } catch (ex) {
     return require.cache[module];
   }
@@ -171,7 +167,7 @@ app.use(async (ctx, next) => {
     const faasname = file(faas);
     try {
       let module = requireModule(faasname);
-      if(typeof module !== 'function' && typeof module.default === 'function') {
+      if(module && typeof module !== 'function' && typeof module.default === 'function') {
         module = module.default;
       }
       if(typeof module === 'function') {
