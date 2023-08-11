@@ -14,12 +14,12 @@ const { file } = require('./utils');
 
 const logger = new Logger();
 
-const _symbolReceviedTime = Symbol('request-received.startTime');
+const _symbolReceivedTime = Symbol('request-received.startTime');
 
 const app = new Koa();
 app.use(async (ctx, next) => {
   logger.info(`<<< ${ctx.method} ${ctx.url}`);
-  ctx[_symbolReceviedTime] = Date.now();
+  ctx[_symbolReceivedTime] = Date.now();
   await next();
 });
 app.use(koaBody({
@@ -160,7 +160,7 @@ app.use(async (ctx, next) => {
     url: ctx.request.url,
     path: ctx.request.path,
     host: ctx.request.host,
-    protocal: ctx.protocol,
+    protocol: ctx.protocol,
     req: ctx.request,
     res: ctx.response,
     cookies: cookie.parse(ctx.request.headers.cookie || ''),
@@ -204,7 +204,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx) => {
-  logger.info(`>>> ${ctx.method} ${ctx.url} ${ctx.response.status} ${Date.now() - ctx[_symbolReceviedTime]}ms`);
+  logger.info(`>>> ${ctx.method} ${ctx.url} ${ctx.response.status} ${Date.now() - ctx[_symbolReceivedTime]}ms`);
 });
 
 function start(port = process.env.AC_PORT || 3000) {
