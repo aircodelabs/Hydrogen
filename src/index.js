@@ -13,12 +13,12 @@ const { build, file } = require('./faas-builder');
 
 const logger = new Logger();
 
-const _symbolReceviedTime = Symbol('request-received.startTime');
+const _symbolReceivedTime = Symbol('request-received.startTime');
 
 const app = new Koa();
 app.use(async (ctx, next) => {
   logger.info(`<<< ${ctx.method} ${ctx.url}`);
-  ctx[_symbolReceviedTime] = Date.now();
+  ctx[_symbolReceivedTime] = Date.now();
   await next();
 });
 app.use(koaBody({
@@ -62,11 +62,7 @@ function requireModule(faasname) {
     module = `${faasname}.cjs`;
   }
   try {
-    let _module = require(module);
-    if(typeof _module !== 'function' && typeof _module.default === 'function') {
-      _module = _module.default;
-    }
-    return _module;
+    return require(module);
   } catch (ex) {
     return require.cache[module];
   }
@@ -159,7 +155,7 @@ app.use(async (ctx, next) => {
     url: ctx.request.url,
     path: ctx.request.path,
     host: ctx.request.host,
-    protocal: ctx.protocol,
+    protocol: ctx.protocol,
     req: ctx.request,
     res: ctx.response,
     cookies: cookie.parse(ctx.request.headers.cookie || ''),
@@ -170,7 +166,7 @@ app.use(async (ctx, next) => {
     const faasname = file(faas);
     try {
       let module = requireModule(faasname);
-      if(typeof module !== 'function' && typeof module.default === 'function') {
+      if(module && typeof module !== 'function' && typeof module.default === 'function') {
         module = module.default;
       }
       if(typeof module === 'function') {
@@ -203,7 +199,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx) => {
-  logger.info(`>>> ${ctx.method} ${ctx.url} ${ctx.response.status} ${Date.now() - ctx[_symbolReceviedTime]}ms`);
+  logger.info(`>>> ${ctx.method} ${ctx.url} ${ctx.response.status} ${Date.now() - ctx[_symbolReceivedTime]}ms`);
 });
 
 function start(port = process.env.AC_PORT || 3000) {
