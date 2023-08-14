@@ -112,7 +112,24 @@ function build(root = 'src') {
   });
 }
 
+function requireModule(faas) {
+  const faasname = file(faas);
+  let module = faasname;
+  if(!require.cache[module]) {
+    module = `${faasname}.js`;
+  }
+  if(!require.cache[module]) {
+    module = `${faasname}.cjs`;
+  }
+  try {
+    return require(module);
+  } catch (ex) {
+    return require.cache[module];
+  }
+}
+
 module.exports = {
   file,
   build,
+  requireModule,
 };

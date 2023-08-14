@@ -9,7 +9,7 @@ const serve = require('koa-static');
 
 const cookie = require('cookie');
 
-const { build, file } = require('./faas-builder');
+const { build, file, requireModule } = require('./faas-builder');
 
 const logger = new Logger();
 
@@ -43,6 +43,7 @@ process.env.AC_REGION = process.env.AC_REGION || 'local';
 process.env.AC_NODE_JS_VERSION = process.version.match(/^v(\d+\.\d+)/)[1];
 process.env.AC_FAAS_ROOT = process.env.AC_FAAS_ROOT || 'functions';
 process.env.AC_PUBLIC_DIR = process.env.AC_PUBLIC_DIR || 'public';
+if(process.env.AC_EXPOSE_CONFIG !== false) process.env.AC_EXPOSE_CONFIG = true;
 
 build(process.env.AC_FAAS_ROOT);
 
@@ -52,21 +53,6 @@ moduleAlias.addAliases({
 });
 
 require('aircode'); // for cache
-
-function requireModule(faasname) {
-  let module = faasname;
-  if(!require.cache[module]) {
-    module = `${faasname}.js`;
-  }
-  if(!require.cache[module]) {
-    module = `${faasname}.cjs`;
-  }
-  try {
-    return require(module);
-  } catch (ex) {
-    return require.cache[module];
-  }
-}
 
 // public dir
 app.use(async (ctx, next) => {
@@ -146,6 +132,10 @@ app.use(async (ctx, next) => {
       if(code) ctx.response.status = code;
       return ctx.response.status;
     },
+    redirect: (url, code = 302) => {
+      ctx.status = code;
+      return ctx.redirect(url);
+    },
     cookie: (name, value, options) => {
       ctx.cookies.set(name, value, options);
     },
@@ -156,16 +146,54 @@ app.use(async (ctx, next) => {
     path: ctx.request.path,
     host: ctx.request.host,
     protocol: ctx.protocol,
-    req: ctx.request,
-    res: ctx.response,
     cookies: cookie.parse(ctx.request.headers.cookie || ''),
   };
+
+  Object.defineProperties(context, {
+    req: {
+      get() { 
+        return ctx.req;
+      }
+    },
+    res: {
+      get() { 
+        return ctx.res;
+      }
+    },
+    request: {
+      get() {
+        return ctx.req;
+      }
+    },
+    response: {
+      get() {
+        return ctx.res;
+      }
+    },
+  });
   const faas = ctx.request.path.slice(1) || 'index';
   // console.log(faas);
   if(faas && !faas.startsWith('.')) {
-    const faasname = file(faas);
     try {
-      let module = requireModule(faasname);
+      let module;
+      if(process.env.EXPRIMENTAL_ROUTE) {
+        const paths = faas.split('/');
+        for(let i = 1; i <= paths.length; i++) {
+          const name = paths.slice(0, i).join('/');
+          module = requireModule(name);
+          if(module) {
+            let route = `/${paths.slice(i).join('/')}`;
+            if (route === '/') {
+              route = '';
+            }
+            logger.info(`Route => ${name} | ${route}`);
+            if(route) context.route = route;
+            break;
+          }
+        }
+      } else {
+        module = requireModule(faas);
+      }
       if(module && typeof module !== 'function' && typeof module.default === 'function') {
         module = module.default;
       }
@@ -175,6 +203,9 @@ app.use(async (ctx, next) => {
         } catch(ex) {
           logger.error(ex);
         }
+      } else {
+        ctx.status = 500;
+        ctx.body = `Module ${faas} is not callable.`;
       }
     } catch (ex) {
       // do nothing
