@@ -9,8 +9,7 @@ const serve = require('koa-static');
 
 const cookie = require('cookie');
 
-const build = require('./faas-builder');
-const { file } = require('./utils');
+const { build, file } = require('./faas-builder');
 
 const logger = new Logger();
 

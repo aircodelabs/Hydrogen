@@ -4,7 +4,7 @@ const { pathToFileURL, fileURLToPath } = require('node:url');
 const fetch = require('node-fetch');
 const {generateID} = require('../utils');
 const mime = require('mime');
-const { file } = require('../utils');
+const { file } = require('../faas-builder');
 
 function randomString(length = 8) {
   return Math.random().toString(36).substring(2, length + 2);

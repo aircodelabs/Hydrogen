@@ -71,7 +71,11 @@ function reloadAllModules() {
   }
 }
 
-module.exports = function(root = 'src') {
+function file(faas) {
+  return path.resolve('.', process.env.AC_FAAS_ROOT, faas);
+}
+
+function build(root = 'src') {
   const dir = path.resolve('.', root);
   const chokidar = require('chokidar');
   chokidar.watch(dir, {
@@ -106,4 +110,9 @@ module.exports = function(root = 'src') {
       }
     }
   });
+}
+
+module.exports = {
+  file,
+  build,
 };
