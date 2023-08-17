@@ -3,8 +3,7 @@ const fs = require('node:fs');
 
 const esbuild = require('esbuild');
 
-const Logger = require('think-logger3');
-const logger = new Logger();
+const { consola:logger } = require("consola");
 
 const modules = new Set();
 
@@ -46,7 +45,7 @@ function moduleRequire(filepath) {
     try {
       ret = require(outfile);
     } catch(ex) {
-      logger.error(ex.message);
+      logger.error(ex);
     } finally {
       fs.unlinkSync(outfile);
     }

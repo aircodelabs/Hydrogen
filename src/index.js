@@ -4,20 +4,20 @@ const Koa = require('koa');
 const mime = require('mime');
 
 const { koaBody } = require('koa-body');
-const Logger = require('think-logger3');
 const serve = require('koa-static');
 
 const cookie = require('cookie');
 
 const { build, file, requireModule } = require('./faas-builder');
 
-const logger = new Logger();
+const { consola:logger } = require("consola");
+const { colors } = require('consola/utils');
 
 const _symbolReceivedTime = Symbol('request-received.startTime');
 
 const app = new Koa();
 app.use(async (ctx, next) => {
-  logger.info(`<<< ${ctx.method} ${ctx.url}`);
+  logger.info(`${colors.gray('<==')} ${ctx.method} ${ctx.url}`);
   ctx[_symbolReceivedTime] = Date.now();
   await next();
 });
@@ -186,7 +186,7 @@ app.use(async (ctx, next) => {
             if (route === '/') {
               route = '';
             }
-            logger.info(`Route => ${name} | ${route}`);
+            logger.info(`Route ${colors.gray('>>')} ${name} ${colors.gray('|')} ${route}`);
             if(route) context.route = route;
             break;
           }
@@ -230,7 +230,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx) => {
-  logger.info(`>>> ${ctx.method} ${ctx.url} ${ctx.response.status} ${Date.now() - ctx[_symbolReceivedTime]}ms`);
+  logger.info(`${colors.gray('==>')} ${ctx.method} ${ctx.url} ${ctx.response.status} ${Date.now() - ctx[_symbolReceivedTime]}ms`);
 });
 
 function start(port = process.env.AC_PORT || 3000) {
