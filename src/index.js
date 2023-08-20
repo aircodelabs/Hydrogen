@@ -200,7 +200,6 @@ app.use(async (ctx, next) => {
       if(typeof module === 'function') {
         try {
           ctx.body = await module(params, context);
-          return;
         } catch(ex) {
           ctx.status = 500;
           logger.error(ex);
