@@ -78,8 +78,9 @@ function build(root = 'src') {
   const dir = path.resolve('.', root);
   const chokidar = require('chokidar');
   chokidar.watch(dir, {
-    ignored: [/node_modules\//, /\.client\.(mjs|cjs|js|ts)$/],
+    ignored: [/node_modules\//, /\.client\.(mjs|cjs|js|ts)$/, /\.db$/,  /\.meta$/,  /\.files$/, /\.db\//, /\.files\//, /\.meta\//],
   }).on('all', (event, filepath) => {
+    // logger.info(`${event}: ${filepath}`);
     if(filepath.endsWith('.js') || filepath.endsWith('.cjs')
       || filepath.endsWith('.mjs') || filepath.endsWith('.ts')) {
       if(event === 'add' || event === 'change') {

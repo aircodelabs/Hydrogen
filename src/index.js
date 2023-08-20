@@ -67,7 +67,7 @@ if(process.env.AC_EXPOSE_CONFIG) {
   app.use(async (ctx, next) => {
     const ext = path.extname(ctx.url);
 
-    if (['.json', '.yaml', '.yml'].includes(ext)) {
+    if (['.json', '.yaml', '.yml', '.ico'].includes(ext)) {
       logger.info(`response ${ext} file`);
       const faas = ctx.request.path.slice(1) || 'index';
       const filepath = file(faas);
@@ -78,7 +78,7 @@ if(process.env.AC_EXPOSE_CONFIG) {
       return;
     }
 
-    next();
+    await next();
   });
 }
 
@@ -200,7 +200,9 @@ app.use(async (ctx, next) => {
       if(typeof module === 'function') {
         try {
           ctx.body = await module(params, context);
+          return;
         } catch(ex) {
+          ctx.status = 500;
           logger.error(ex);
         }
       } else {
