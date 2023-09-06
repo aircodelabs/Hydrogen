@@ -1,9 +1,9 @@
 const path = require('path');
-const AirDB = require('airdb-lite/dist/airdb-lite.cjs').default;
+const { OkeyDB } = require('okeydb');
 
 const FileService = require('./file-service');
 
-const db = new AirDB({
+const db = new OkeyDB({
   root: path.join(process.env.AC_FAAS_ROOT, '.db'),
   meta: path.join(process.env.AC_FAAS_ROOT, '.meta'),
 });
