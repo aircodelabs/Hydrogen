@@ -3,6 +3,8 @@ const fs = require('node:fs');
 const Koa = require('koa');
 const mime = require('mime');
 
+const cors = require('@koa/cors');
+
 const { koaBody } = require('koa-body');
 const serve = require('koa-static');
 
@@ -16,6 +18,7 @@ const { colors } = require('consola/utils');
 const _symbolReceivedTime = Symbol('request-received.startTime');
 
 const app = new Koa();
+app.use(cors());
 app.use(async (ctx, next) => {
   logger.info(`${colors.gray('<==')} ${ctx.method} ${ctx.url}`);
   ctx[_symbolReceivedTime] = Date.now();
