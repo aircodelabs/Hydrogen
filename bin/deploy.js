@@ -16,7 +16,7 @@ fs.writeFileSync(destPackageJSONPath, JSON.stringify({dependencies}, null, 2));
 
 const isTypeScript = fs.existsSync(path.resolve('.', 'tsconfig.json'));
 
-const aircodeConfig = `{
+const defaultAircodeConfig = `{
   "name": "${packageJSON.name}",
   "runtime": "node/v16",
   "timeout": 60,
@@ -24,8 +24,21 @@ const aircodeConfig = `{
   "envs": [],
   "typescript": ${isTypeScript}
 }`;
-
-fs.writeFileSync(path.resolve(root, 'aircode.config.json'), aircodeConfig);
+const aircodeConfigPath = path.resolve(root, 'aircode.config.json');
+try {
+  const read = JSON.parse(fs.readFileSync(aircodeConfigPath, 'utf-8'));
+  const final = `{
+  "name": "${read.name || packageJSON.name}",
+  "runtime": "${read.runtime || 'node/v16'}",
+  "timeout": ${read.timeout || 60},
+  "region": "${read.region || 'US'}",
+  "envs": ${read.envs || []},
+  "typescript": ${read.typescript || isTypeScript}
+}`;
+  fs.writeFileSync(aircodeConfigPath, final);
+} catch {
+  fs.writeFileSync(aircodeConfigPath, defaultAircodeConfig);
+}
 
 if(packageJSON.repository && packageJSON.repository.type === 'git') {
   let repository = packageJSON.repository.url;
